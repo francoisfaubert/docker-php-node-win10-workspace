@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$1" == "install" ] || [ "$1" == "update" ]; then
+if [ "$1" == "install" ] || [ "$1" == "update" ] || [ "$1" == "uninstall" ]; then
     CWDMD5=`echo pwd | md5sum | cut -f1 -d" "`
 
     if [ ! -d "~/node_cache/$CWDMD5" ]; then
