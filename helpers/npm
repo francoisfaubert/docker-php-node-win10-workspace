@@ -1,32 +1,38 @@
 #!/bin/bash
 
-CWDMD5=`echo pwd | md5sum | cut -f1 -d" "`
+if [ "$1" == "install" ] || [ "$1" == "update" ]; then
+    CWDMD5=`echo pwd | md5sum | cut -f1 -d" "`
 
-if [ ! -d "~/node_cache/$CWDMD5" ]; then
-   echo "--> Creating cache ID: $CWDMD5"
-   mkdir -p ~/node_cache/$CWDMD5
-   sudo chown vagrant:vagrant ~/node_cache/$CWDMD5
-fi
+    if [ ! -d "~/node_cache/$CWDMD5" ]; then
+        echo "--> Creating cache ID: $CWDMD5"
+        mkdir -p ~/node_cache/$CWDMD5
+        sudo chown vagrant:vagrant ~/node_cache/$CWDMD5
+    fi
 
-if [ -d "node_modules" ]; then
-    rsync -aHAXxv --numeric-ids --delete --progress node_modules/ ~/node_cache/$CWDMD5/node_modules | xargs -L1 printf "\33[2K\r--> Capturing [%s]"
-    echo ""
-fi
+    if [ -d "node_modules" ]; then
+        rsync -aHAXxv --numeric-ids --delete --progress node_modules/ ~/node_cache/$CWDMD5/node_modules | xargs -L1 printf "\33[2K\r--> Capturing... [%s]"
+        echo ""
+    fi
 
-if [ -f "package.json" ]; then
-    cp package.json ~/node_cache/$CWDMD5/package.json
-fi
+    if [ -f "package.json" ]; then
+        cp package.json ~/node_cache/$CWDMD5/package.json > /dev/null
+    fi
 
-if [ -f "package-lock.json" ]; then
-    cp package-lock.json ~/node_cache/$CWDMD5/package-lock.json
-fi
+    if [ -f "package-lock.json" ]; then
+        cp package-lock.json ~/node_cache/$CWDMD5/package-lock.json > /dev/null
+    fi
 
-docker run --rm --interactive --tty --volume ~/node_cache/$CWDMD5:/usr/src/app2 -w /usr/src/app2 node npm $@
+    docker run --rm --interactive --tty --volume ~/node_cache/$CWDMD5:/usr/src/app -w /usr/src/app node npm $@
 
-sudo chown -R vagrant:vagrant ~/node_cache/$CWDMD5 
-rsync -aHAXxv --numeric-ids --delete --progress ~/node_cache/$CWDMD5/node_modules/ $PWD/node_modules | xargs -L1 printf "\33[2K\r--> Applying [%s]"
-echo ""
+    if [ "$1" == "install" ] || [ "$1" == "update" ]; then
+        sudo chown -R vagrant:vagrant ~/node_cache/$CWDMD5 
+        rsync -aHAXxv --numeric-ids --delete --progress ~/node_cache/$CWDMD5/node_modules/ $PWD/node_modules | xargs -L1 printf "\33[2K\r--> Applying... [%s]"
+        echo ""
 
-if [ -f "~/node_cache/$CWDMD5/package-lock.json" ]; then
-    cp ~/node_cache/$CWDMD5/package-lock.json $PWD
+        if [ -f "~/node_cache/$CWDMD5/package-lock.json" ]; then
+            cp ~/node_cache/$CWDMD5/package-lock.json $PWD
+        fi
+    fi
+else
+    docker run --rm --interactive --tty --volume $PWD:/usr/src/app -w /usr/src/app node npm $@
 fi
