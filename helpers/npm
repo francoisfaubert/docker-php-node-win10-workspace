@@ -9,7 +9,7 @@ if [ ! -d "~/node_cache/$CWDMD5" ]; then
 fi
 
 if [ -d "node_modules" ]; then
-    rsync -aHAXxv --numeric-ids --delete --progress node_modules/ ~/node_cache/$CWDMD5/node_modules | xargs -L1 printf "\33[1K\r--> Capturing [%s]"
+    rsync -aHAXxv --numeric-ids --delete --progress node_modules/ ~/node_cache/$CWDMD5/node_modules | xargs -L1 printf "\33[2K\r--> Capturing [%s]"
     echo ""
 fi
 
@@ -24,7 +24,7 @@ fi
 docker run --rm --interactive --tty --volume ~/node_cache/$CWDMD5:/usr/src/app2 -w /usr/src/app2 node npm $@
 
 sudo chown -R vagrant:vagrant ~/node_cache/$CWDMD5 
-rsync -aHAXxv --numeric-ids --delete --progress ~/node_cache/$CWDMD5/node_modules/ $PWD/node_modules | xargs -L1 printf "\33[1K\r--> Applying [%s]"
+rsync -aHAXxv --numeric-ids --delete --progress ~/node_cache/$CWDMD5/node_modules/ $PWD/node_modules | xargs -L1 printf "\33[2K\r--> Applying [%s]"
 echo ""
 
 if [ -f "~/node_cache/$CWDMD5/package-lock.json" ]; then
