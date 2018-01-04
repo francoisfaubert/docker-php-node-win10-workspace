@@ -18,11 +18,11 @@ end
 Vagrant.configure("2") do |config| 
 
     config.vm.box = "ubuntu/trusty64"
-    config.vm.box_version = "0.0.1"
     config.vm.network :private_network, ip: VM_IP
     config.ssh.forward_agent = true
 
-    config.vm.synced_folder "./", "/vagrant", type: "nfs"   
+    # config.vm.synced_folder "./", "/vagrant", type: "nfs"   
+    config.vm.synced_folder "C:\\Users\\francois\\Projects\\drainvac\\ecommerce", "/vagrant", type: "nfs"   
     config.vm.synced_folder persist_cache_directory, "/home/vagrant/.workspace-persist/"  
 
     config.vm.provider :virtualbox do |vb|
@@ -38,22 +38,12 @@ Vagrant.configure("2") do |config|
     config.vm.provision "file", source: "helpers/npm", destination: "npm"
     config.vm.provision "file", source: "helpers/persist-sync", destination: "persist-sync"
 
-
     # Move the helpers to the bin directory
     config.vm.provision "shell" do |s|
       s.inline = <<-SHELL
-        # echo '#!/bin/bash' > composer
-        # echo 'docker run --rm --interactive --tty --volume $PWD:/app composer \"$@\"' >> composer
-        sudo chmod +x composer && sudo mv composer /usr/local/bin/composer
-
-        # echo '#!/bin/bash' > npm
-        # echo 'docker run --rm --interactive --tty --volume $PWD:/usr/src/app -w /usr/src/app node npm \"$@\"' >> npm
-        sudo chmod +x npm && sudo mv npm /usr/local/bin/npm
-
-        # echo '#!/bin/bash' > persist-sync
-        # echo 'if [ "$1" -eq  "pull"] ; then echo "I would pull"; fi' >> persist-sync
-        # echo 'if [ "$1" -eq  "push"] ; then echo "I would push"; fi' >> persist-sync
-        sudo chmod +x persist-sync && sudo mv persist-sync /usr/local/bin/persist-sync
+        sudo sed -i -e 's/\r$//' composer && sudo chmod +x composer && sudo mv composer /usr/local/bin/composer
+        sudo sed -i -e 's/\r$//' npm && sudo chmod +x npm && sudo mv npm /usr/local/bin/npm
+        sudo sed -i -e 's/\r$//' persist-sync && sudo chmod +x persist-sync && sudo mv persist-sync /usr/local/bin/persist-sync
       SHELL
     end
 
