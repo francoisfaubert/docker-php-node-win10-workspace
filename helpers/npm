@@ -32,6 +32,10 @@ if [ "$1" == "install" ] || [ "$1" == "update" ]; then
         if [ -f "~/node_cache/$CWDMD5/package-lock.json" ]; then
             cp ~/node_cache/$CWDMD5/package-lock.json $PWD
         fi
+
+        if [ -f "~/node_cache/$CWDMD5/package.json" ]; then
+            cp ~/node_cache/$CWDMD5/package.json $PWD
+        fi
     fi
 else
     docker run --rm --interactive --tty --volume $PWD:/usr/src/app -w /usr/src/app node npm $@
