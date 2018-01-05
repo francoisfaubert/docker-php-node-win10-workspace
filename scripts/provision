@@ -13,7 +13,6 @@ persist-sync pull > /dev/null
 # Until I find a way to correctly watch for file changes on MySQL innodb:
 (crontab -l 2>/dev/null; echo "*/2 * * * * /usr/local/bin/persist-sync push") | crontab -
 
-
 echo "--> Setting up bash"
 # Change directory automatically on ssh login to
 # the one containing the project list
