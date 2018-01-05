@@ -25,13 +25,8 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--ostype", "Ubuntu_64"]
     end
 
-    # Move the helpers to a bin directory
     config.vm.provision "shell", inline: "curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/scripts/provision | bash"
-        
-    # Docker is used to build project dependencies
-    config.vm.provision :docker do |d|
-        d.pull_images "composer:latest"        
-    end
-    
-    config.vm.provision :docker_compose
+
+    config.vm.provision "docker", images: ["composer:latest"]    
+	config.vm.provision :docker_compose
 end
