@@ -1,9 +1,9 @@
 #!/bin/bash
 
 echo "--> Downloading helper scripts"
-curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/helpers/composer -O
-curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/helpers/npm -O
-curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/helpers/persist-sync -O
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/helpers/composer -O
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/helpers/npm -O
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/helpers/persist-sync -O
 
 echo "--> Installing helper scripts"
 sudo chmod +x composer && sudo mv composer /usr/local/bin/composer

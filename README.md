@@ -4,6 +4,16 @@ This Vagrant box allows one to run Docker natively on a Linux VM on a Windows ho
 
 Unlike Docker Toolbox, this alternative seems to offer better network speeds in between containers and offers faster NFS file sharing in between machines.
 
+# Installation
+
+* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/Vagrantfile) to `Vagrantfile` saved the root of your project's directory
+* Run `vagrant up`
+
+# Updates
+
+* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/Vagrantfile) over the existsing `Vagrantfile` at the root of your project's directory
+* Run `vagrant reload --provision`
+
 ## Requirements
 
 It has the following hard-coded assumptions:
