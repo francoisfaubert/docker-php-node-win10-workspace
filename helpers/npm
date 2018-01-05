@@ -1,13 +1,14 @@
 #!/bin/bash
 
 CWDMD5=`echo pwd | md5sum | cut -f1 -d" "`
+CACHE_DIRECTORY="/home/vagrant/.workspace_npm_cache/$CWDMD5"
 
-if [ ! -d "/home/vagrant/.workspace_npm_cache/$CWDMD5" ]; then
+if [ ! -d "$CACHE_DIRECTORY" ]; then
     echo "--> Creating cache ID: $CWDMD5"
-    mkdir -p /home/vagrant/.workspace_npm_cache/$CWDMD5    
+    mkdir -p $CACHE_DIRECTORY/node_modules
 fi
 
-if [ ! -L "$PWD/node_modules" ]; then    
+if [ ! -L "$PWD/node_modules" ]; then   
 
     if [ -d "$PWD/node_modules" ]; then
         echo "--> Removing original node_modules directory ..."
@@ -15,7 +16,31 @@ if [ ! -L "$PWD/node_modules" ]; then
     fi
 
     echo "--> Updating NPM symlink"
-    ln -s $PWD/node_modules /home/vagrant/.workspace_npm_cache/$CWDMD5
+    ln -s $CACHE_DIRECTORY/node_modules $PWD/node_modules
 fi
 
-docker run --rm --interactive --tty --volume $PWD:/usr/src/app -w /usr/src/app node npm "$@"
+# Every modifications than may create symlinks should be ran from the $CACHE_DIRECTORY
+# as to not break npm. This requires vagrant to be ran from elevated rights.
+if [ "$1" == "install" ] || [ "$1" == "update" ] || [ "$1" == "uninstall" ]; then
+    if [ -f "$PWD/package.json" ]; then
+        cp $PWD/package.json $CACHE_DIRECTORY
+    fi
+
+    if [ -f "$PWD/package-lock.json" ]; then
+        cp $PWD/package-lock.json $CACHE_DIRECTORY
+    fi
+
+    docker run --rm --interactive --tty --volume $CACHE_DIRECTORY:/usr/src/app -w /usr/src/app node npm "$@"
+
+    if [ -f "$CACHE_DIRECTORY/package.json" ]; then
+        cp $CACHE_DIRECTORY/package.json $PWD
+    fi
+
+    if [ -f "$CACHE_DIRECTORY/package-lock.json" ]; then
+        cp $CACHE_DIRECTORY/package-lock.json $PWD
+    fi
+    
+# Other commands may be ran directly from the working directory
+else
+    docker run --rm --interactive --tty --volume $PWD:/usr/src/app -w /usr/src/app node npm "$@"
+fi
