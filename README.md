@@ -26,4 +26,4 @@ It has the following hard-coded assumptions:
 
 ## Preloaded Docker containers
 
-The VM will automatically provision [Composer](https://hub.docker.com/_/composer/) and [Node](https://hub.docker.com/_/node/) containers. It provides a simplistic level of abstraction by forwarding calls from a global binary mock to their respective containers.
+The VM will automatically provision the [Composer](https://hub.docker.com/_/composer/) container. It provides a simplistic level of abstraction by forwarding calls from a global binary mock to their respective containers. Node should also have been containerized, but it really does not behave well on a VM and therefore is installed on the VM through `apt-get`.

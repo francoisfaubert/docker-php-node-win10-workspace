@@ -30,9 +30,7 @@ Vagrant.configure("2") do |config|
         
     # Docker is used to build project dependencies
     config.vm.provision :docker do |d|
-        # Prepare Composer and Node as default containers
-        d.pull_images "composer:latest"
-        d.pull_images "node:latest"
+        d.pull_images "composer:latest"        
     end
     
     config.vm.provision :docker_compose
