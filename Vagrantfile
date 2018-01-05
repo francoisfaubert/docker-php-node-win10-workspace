@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Move the helpers to a bin directory
-    config.vm.provision "shell", inline: "curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/scripts/provision | bash"
+    config.vm.provision "shell", inline: "curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/scripts/provision | bash"
         
     # Docker is used to build project dependencies
     config.vm.provision :docker do |d|
