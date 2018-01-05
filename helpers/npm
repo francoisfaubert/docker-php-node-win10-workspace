@@ -1,42 +1,21 @@
 #!/bin/bash
 
-if [ "$1" == "install" ] || [ "$1" == "update" ] || [ "$1" == "uninstall" ]; then
-    CWDMD5=`echo pwd | md5sum | cut -f1 -d" "`
+CWDMD5=`echo pwd | md5sum | cut -f1 -d" "`
 
-    if [ ! -d "/home/vagrant/node_cache/$CWDMD5" ]; then
-        echo "--> Creating cache ID: $CWDMD5"
-        mkdir -p /home/vagrant/node_cache/$CWDMD5
-    fi
+if [ ! -d "/home/vagrant/.workspace_npm_cache/$CWDMD5" ]; then
+    echo "--> Creating cache ID: $CWDMD5"
+    mkdir -p /home/vagrant/.workspace_npm_cache/$CWDMD5    
+fi
+
+if [ ! -L "$PWD/node_modules" ]; then    
 
     if [ -d "$PWD/node_modules" ]; then
-        sudo rsync -azAXxv --numeric-ids --delete --progress node_modules/ /home/vagrant/node_cache/$CWDMD5/node_modules | xargs -L1 printf "\33[2K\r--> Capturing state... [%s]"
-        echo ""         
-        sudo chown -R vagrant:vagrant /home/vagrant/node_cache/$CWDMD5/node_modules
+        echo "--> Removing original node_modules directory ..."
+        rm -rf $PWD/node_modules
     fi
 
-    if [ -f "$PWD/package.json" ]; then
-        cp $PWD/package.json /home/vagrant/node_cache/$CWDMD5
-    fi
-
-    if [ -f "$PWD/package-lock.json" ]; then
-        cp $PWD/package-lock.json /home/vagrant/node_cache/$CWDMD5
-    fi
-
-    docker run --rm --interactive --tty --volume /home/vagrant/node_cache/$CWDMD5:/usr/src/app -w /usr/src/app node npm "$@"
-
-    if [ "$1" == "install" ] || [ "$1" == "update" ] || [ "$1" == "uninstall" ]; then
-        sudo rsync -azAXxv --numeric-ids --delete --progress /home/vagrant/node_cache/$CWDMD5/node_modules/ $PWD/node_modules | xargs -L1 printf "\33[2K\r--> Applying state... [%s]"
-        echo ""
-        sudo chown -R vagrant:vagrant $PWD/node_modules
-
-        if [ -f "/home/vagrant/node_cache/$CWDMD5/package-lock.json" ]; then
-            mv /home/vagrant/node_cache/$CWDMD5/package-lock.json $PWD
-        fi
-
-        if [ -f "/home/vagrant/node_cache/$CWDMD5/package.json" ]; then
-            mv /home/vagrant/node_cache/$CWDMD5/package.json $PWD
-        fi
-    fi
-else
-    docker run --rm --interactive --tty --volume $PWD:/usr/src/app -w /usr/src/app node npm "$@"
+    echo "--> Updating NPM symlink"
+    ln -s $PWD/node_modules /home/vagrant/.workspace_npm_cache/$CWDMD5
 fi
+
+docker run --rm --interactive --tty --volume $PWD:/usr/src/app -w /usr/src/app node npm "$@"
