@@ -20,10 +20,10 @@ It has the following hard-coded assumptions:
 
 * Host OS must be Windows 10
 * This box's `Vagrantfile` must be within a project directory
-* The project directory should contain a docker-compose.yml
-* Vagrant should be ran with elevated rights to allow symlinks
-* It expects to run PHP applications which use NPM, both at their most recent versions
+* The project directory should contain a docker-compose.yml to add server components
+* It expects to run PHP applications at which ever version `php:7-alpine` is using
+* Git, Node.js (and NPM) must be installed on and ran from the _host_ machine
 
 ## Preloaded Docker containers
 
-The VM will automatically provision the [Composer](https://hub.docker.com/_/composer/) container. It provides a simplistic level of abstraction by forwarding calls from a global binary mock to their respective containers. Node should also have been containerized, but it really does not behave well on a VM and therefore is installed on the VM through `apt-get`.
+The VM will automatically provision the [Composer](https://hub.docker.com/_/composer/) container. It also provides a simplistic level of abstraction by forwarding calls from a global binary mock to their respective containers to prevent the need to call the longer Docker command.
