@@ -11,7 +11,7 @@ Unlike Docker Toolbox, this alternative seems to offer better network speeds in 
 
 # Updates
 
-* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/Vagrantfile) over the existsing `Vagrantfile` at the root of your project's directory
+* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/Vagrantfile) over the existing `Vagrantfile` at the root of your project's directory
 * Run `vagrant reload --provision`
 
 ## Requirements
