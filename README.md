@@ -20,10 +20,10 @@ The VM will automatically provision the [Composer](https://hub.docker.com/_/comp
 
 ## Installation
 
-* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/Vagrantfile) as a `Vagrantfile` saved at the root of your project's directory
+* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php7-win10-workspace/master/Vagrantfile) as a `Vagrantfile` saved at the root of your project's directory
 * Run `vagrant up`
 
 ## Updates
 
-* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/master/Vagrantfile) over the existing `Vagrantfile` at the root of your project's directory
+* Save [this file](https://raw.githubusercontent.com/francoisfaubert/docker-php7-win10-workspace/master/Vagrantfile) over the existing `Vagrantfile` at the root of your project's directory
 * Run `vagrant reload --provision`
