@@ -1,4 +1,10 @@
 #!/bin/bash
 
-if [ "$1" -eq  "pull"] ; then echo "I would pull"; fi
-if [ "$1" -eq  "push"] ; then echo "I would push"; fi
+if [ "$1" == "pull" ]; then
+    sudo rsync -aHAXxv --numeric-ids --delete --progress /home/vagrant/.persist-cache/ /home/vagrant/persisted/
+elif [ "$1" == "push" ]; then
+    sudo rsync -aHAXxv --numeric-ids --delete --progress /home/vagrant/persisted/ /home/vagrant/.persist-cache/
+else
+    echo "The direction must be specified. Expected one of `pull` or `push`."
+    exit -1
+fi

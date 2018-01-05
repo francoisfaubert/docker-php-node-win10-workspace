@@ -1,0 +1,22 @@
+#!/bin/bash
+
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/Vagrantfile -O
+
+if [ -f "$PWD/Vagrantfile" ]; then
+    echo "--> Updating Vagrantfile"  
+else
+    echo "--> Creating Vagrantfile"
+fi
+
+if [ -f "$PWD/Vagrantfile" ]; then
+    if ! grep -qF "/.vagrant" $PWD/.gitignore ; then 
+        echo "--> Updating .gitignore file"
+        echo "/.vagrant" > .gitignore
+    fi
+else 
+    echo "--> Creating .gitignore file"
+    echo "/.vagrant" > .gitignore
+fi
+
+echo "--> The project is ready to use with Vagrant."
+echo "    Launch the box using `vagrant up` and go grab a coffee while it builds!"

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "--> Downloading helper scripts"
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/helpers/composer -O
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/helpers/npm -O
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php-node-win10-workspace/helpers/persist-sync -O
+
+echo "--> Installing helper scripts"
+sudo chmod +x composer && sudo mv composer /usr/local/bin/composer
+sudo chmod +x npm && sudo mv npm /usr/local/bin/npm
+sudo chmod +x persist-sync && sudo mv persist-sync /usr/local/bin/persist-sync
+
+echo "--> Synchronizing persisted data"
+persist-sync pull > /dev/null
+
+echo "--> Setting up bash"
+# Change directory automatically on ssh login to
+# the one containing the project list
+if ! grep -qF "cd /vagrant" /home/vagrant/.bashrc ; then 
+    echo "cd /vagrant" >> /home/vagrant/.bashrc
+fi
