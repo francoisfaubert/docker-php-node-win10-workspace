@@ -3,10 +3,12 @@
 echo "--> Downloading helper scripts"
 curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php7-win10-workspace/master/helpers/composer -O
 curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php7-win10-workspace/master/helpers/persist-sync -O
+curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php7-win10-workspace/master/helpers/npm -O
 
 echo "--> Installing helper scripts"
 sudo chmod +x composer && sudo mv composer /usr/local/bin/composer
 sudo chmod +x persist-sync && sudo mv persist-sync /usr/local/bin/persist-sync
+sudo chmod +x npm && sudo mv npm /usr/local/bin/npm
 
 echo "--> Synchronizing persisted data"
 persist-sync pull > /dev/null
