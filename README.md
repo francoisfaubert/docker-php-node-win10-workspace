@@ -16,7 +16,9 @@ It has the following hard-coded assumptions:
 
 ### Preloaded Docker containers
 
-The VM will automatically provision the [Composer](https://hub.docker.com/_/composer/) container. It also provides a simplistic level of abstraction by forwarding calls from a global binary mock to their respective containers to prevent the need to call the longer Docker command.
+The VM will automatically provision the [Composer](https://hub.docker.com/_/composer/) and [Node](https://hub.docker.com/_/node/) containers. It also provides a simplistic level of abstraction by forwarding calls from a global binary mock to their respective containers to prevent the need to call the longer Docker command.
+
+NPM requires Vagrant to be ran with administrative privileges for symlinks to work as intended.
 
 ## Installation
 

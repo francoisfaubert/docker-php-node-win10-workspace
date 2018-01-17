@@ -25,6 +25,6 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", inline: "curl -fsS https://raw.githubusercontent.com/francoisfaubert/docker-php7-win10-workspace/master/scripts/provision | bash"
 
-    config.vm.provision "docker", images: ["composer:latest"]    
+    config.vm.provision "docker", images: ["composer:latest", "node:latest"]
 	config.vm.provision :docker_compose
 end
